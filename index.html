@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Easy Rashan</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRWFzeSBSYXNoYW4iLCJzaG9ydF9uYW1lIjoiRWFzeSBSYXNoYW4iLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0ZGRjlGMCIsInRoZW1lX2NvbG9yIjoiI0U4NjUyQiJ9">
+<meta name="theme-color" content="#E8652B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+:root{
+--primary:#E8652B;--primary-dark:#C4501E;--accent:#2D7D46;--accent-light:#3A9B58;
+--bg:#FFF9F0;--surface:#FFFFFF;--surface2:#F5EDE2;
+--text:#1A1A1A;--text2:#6B6B6B;--text3:#9E9E9E;
+--border:#E8DDD0;--border-light:#F0E8DC;
+--danger:#D64545;--success:#2D7D46;
+--check-on:#2D7D46;--check-off:#CCBBAA;
+--whatsapp:#25D366;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0)}
+.app{max-width:480px;margin:0 auto;padding:12px 16px 32px;padding-top:max(12px,env(safe-area-inset-top,12px))}
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:8px 0}
+.header-left{display:flex;align-items:center;gap:12px}
+.header-icon{width:40px;height:40px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.header h1{font-size:24px;font-weight:800;color:var(--text);line-height:1.1}
+.header-sub{font-size:13px;color:var(--text2);font-weight:400;margin-top:-1px}
+.reset-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--surface);border:1px solid var(--border-light);cursor:pointer;font-size:18px;color:var(--text2);transition:all .15s}
+.reset-btn:active{transform:scale(.95);opacity:.8}
+
+.stats{display:flex;align-items:center;background:var(--surface);border-radius:16px;padding:14px 20px;margin-bottom:20px;border:1px solid var(--border-light)}
+.stat{flex:1;text-align:center}
+.stat-num{font-size:22px;font-weight:800;color:var(--primary)}
+.stat-num.green{color:var(--accent)}
+.stat-label{font-size:12px;color:var(--text2);margin-top:2px}
+.stat-div{width:1px;height:32px;background:var(--border-light);margin:0 8px}
+.select-all{background:var(--surface2);padding:8px 14px;border-radius:10px;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--primary);cursor:pointer;margin-left:8px;transition:all .15s}
+.select-all:active{transform:scale(.96);opacity:.8}
+
+.section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.section-hdr span{font-size:18px;font-weight:700}
+.section-hdr .icon{font-size:20px;color:var(--primary)}
+.section-hdr .icon.green{color:var(--accent)}
+
+.item-card{background:var(--surface);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border-light);transition:all .2s}
+.item-card.checked{border:1.5px solid var(--accent);background:#F0FFF4}
+.item-row{display:flex;align-items:center;justify-content:space-between}
+.chk-area{display:flex;align-items:center;gap:12px;flex:1;cursor:pointer;-webkit-user-select:none;user-select:none}
+.chk{width:26px;height:26px;min-width:26px;border-radius:8px;border:2px solid var(--check-off);display:flex;align-items:center;justify-content:center;background:var(--surface);transition:all .15s;font-size:14px;color:#fff}
+.chk.on{background:var(--check-on);border-color:var(--check-on)}
+.item-name{font-size:16px;font-weight:600;color:var(--text);transition:color .15s}
+.item-card.checked .item-name{color:var(--accent)}
+.del-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--danger);font-size:20px;border:none;background:none;border-radius:50%;transition:all .15s}
+.del-btn:active{transform:scale(.9)}
+.item-details{display:flex;align-items:center;gap:10px;margin-top:10px}
+.qty-sel{display:flex;align-items:center;gap:6px;background:var(--surface2);padding:8px 12px;border-radius:10px;cursor:pointer;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);min-width:90px;transition:all .15s;position:relative}
+.qty-sel:active{opacity:.8}
+.qty-sel .arrow{font-size:10px;color:var(--text2)}
+.note-input{flex:1;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:var(--surface2);padding:8px 12px;border-radius:10px;border:none;outline:none}
+.note-input::placeholder{color:var(--text3)}
+.qty-picker{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light)}
+.qty-opt{padding:8px 14px;border-radius:10px;background:var(--surface2);border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s}
+.qty-opt:active{transform:scale(.95)}
+.qty-opt.sel{background:var(--primary);color:#fff}
+
+.add-section{margin-top:20px;margin-bottom:8px}
+.add-card{background:var(--surface);border-radius:16px;padding:16px;border:1.5px dashed var(--accent)}
+.add-input{width:100%;font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:var(--text);background:var(--surface2);padding:12px 14px;border-radius:12px;border:none;outline:none;margin-bottom:10px}
+.add-input::placeholder{color:var(--text3);font-weight:400}
+.add-row{display:flex;gap:10px;margin-bottom:12px}
+.add-qty-sel{display:flex;align-items:center;gap:6px;background:var(--surface2);padding:10px 14px;border-radius:12px;cursor:pointer;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);min-width:100px}
+.add-note{flex:1;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:var(--surface2);padding:10px 14px;border-radius:12px;border:none;outline:none}
+.add-note::placeholder{color:var(--text3)}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--accent);color:#fff;padding:14px;border-radius:12px;border:none;font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .15s}
+.add-btn:active{transform:scale(.98);opacity:.85}
+
+.action-btns{display:flex;flex-direction:column;gap:12px;margin-top:24px;margin-bottom:8px}
+.gen-btn,.wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:14px;border:none;font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:#fff;cursor:pointer;transition:all .15s}
+.gen-btn{background:var(--primary)}
+.wa-btn{background:var(--whatsapp)}
+.gen-btn:active,.wa-btn:active{transform:scale(.98);opacity:.85}
+
+.list-card{background:var(--surface);border-radius:16px;padding:16px;margin-top:16px;border:1px solid var(--border-light)}
+.list-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.list-hdr span{font-size:17px;font-weight:700}
+.close-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:18px;border:none;background:none;border-radius:50%}
+.list-text{font-size:14px;line-height:22px;background:var(--surface2);padding:14px;border-radius:12px;white-space:pre-wrap;word-break:break-word}
+.share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;padding:10px;border-radius:10px;border:1.5px solid var(--primary);background:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;color:var(--primary);cursor:pointer;transition:all .15s}
+.share-btn:active{transform:scale(.98);opacity:.85}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-icon">&#128722;</div>
+    <div>
+      <h1>Easy Rashan</h1>
+      <div class="header-sub">Ghar ka rashan aasan</div>
+    </div>
+  </div>
+  <button class="reset-btn" onclick="resetList()" title="Reset">&#8635;</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num" id="totalCount">0</div><div class="stat-label">Kul Items</div></div>
+  <div class="stat-div"></div>
+  <div class="stat"><div class="stat-num green" id="selCount">0</div><div class="stat-label">Select Kiye</div></div>
+  <button class="select-all" id="selAllBtn" onclick="selectAll()">Sab Chuno</button>
+</div>
+
+<div class="section-hdr"><span class="icon">&#9776;</span><span>Rashan ki List</span></div>
+<div id="itemsList"></div>
+
+<div class="add-section">
+  <div class="section-hdr"><span class="icon green">&#10133;</span><span style="color:var(--accent)">Apna Item Jodo</span></div>
+  <div class="add-card">
+    <input class="add-input" id="newName" type="text" placeholder="Item ka naam likho...">
+    <div class="add-row">
+      <button class="add-qty-sel" id="newQtyBtn" onclick="toggleNewQtyPicker()">
+        <span id="newQtyText">1 kg</span><span class="arrow">&#9660;</span>
+      </button>
+      <input class="add-note" id="newNote" type="text" placeholder="Note (optional)">
+    </div>
+    <div class="qty-picker hidden" id="newQtyPicker"></div>
+    <button class="add-btn" onclick="addNewItem()">&#43; Item Jodo</button>
+  </div>
+</div>
+
+<div class="action-btns">
+  <button class="gen-btn" onclick="generateList()">&#128196; List Banao</button>
+  <button class="wa-btn" onclick="sendWhatsApp()">&#128172; WhatsApp pe Bhejo</button>
+</div>
+
+<div class="list-card hidden" id="genCard">
+  <div class="list-hdr">
+    <span>Aapki Rashan List</span>
+    <button class="close-btn" onclick="document.getElementById('genCard').classList.add('hidden')">&#10005;</button>
+  </div>
+  <div class="list-text" id="genText"></div>
+  <button class="share-btn" onclick="shareList()">&#8618; Share Karo</button>
+</div>
+
+</div>
+
+<script>
+var DEFAULT_ITEMS = [
+  "Chawal","Aata","Udad ki Daal","Moong ki Daal","Chana Daal","Gud",
+  "Desi Ghee","Refined Tel","Cheeni","Namak","Chai Patti",
+  "Sabun","Surf","Biscuit","Masale","Shampoo","Toothpaste"
+];
+var QTY_OPTIONS = [
+  "1 kg","2 kg","5 kg","10 kg","500 gm","250 gm","100 gm",
+  "1 litre","500 ml","1 packet","2 packet","1 dabba","1 piece","2 piece","3 piece"
+];
+var STORAGE_KEY = "easy_rashan_items";
+var CUSTOM_KEY = "easy_rashan_custom_items";
+
+var items = [];
+var openQtyPicker = null;
+var newQty = "1 kg";
+
+function genId(){return Date.now().toString(36)+Math.random().toString(36).substr(2,6)}
+
+function makeDefaults(){
+  return DEFAULT_ITEMS.map(function(n){return {id:genId(),name:n,checked:false,quantity:"1 kg",note:"",isCustom:false}});
+}
+
+function loadItems(){
+  try{
+    var s=localStorage.getItem(STORAGE_KEY);
+    if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length>0){items=p;return}}
+    var d=makeDefaults();
+    var c=localStorage.getItem(CUSTOM_KEY);
+    if(c){var ci=JSON.parse(c);if(Array.isArray(ci)&&ci.length>0){items=d.concat(ci.map(function(x){return{id:x.id||genId(),name:x.name,checked:false,quantity:x.quantity||"1 kg",note:"",isCustom:true}}));return}}
+    items=d;
+  }catch(e){items=makeDefaults()}
+}
+
+function saveItems(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(items))}catch(e){}}
+function saveCustom(){try{var c=items.filter(function(i){return i.isCustom});localStorage.setItem(CUSTOM_KEY,JSON.stringify(c))}catch(e){}}
+
+function render(){
+  var el=document.getElementById("itemsList");
+  var html="";
+  for(var i=0;i<items.length;i++){
+    var it=items[i];
+    var cls="item-card"+(it.checked?" checked":"");
+    html+='<div class="'+cls+'" id="card-'+it.id+'">';
+    html+='<div class="item-row">';
+    html+='<div class="chk-area" onclick="toggleCheck(\''+it.id+'\')">';
+    html+='<div class="chk'+(it.checked?" on":"")+'">'+(it.checked?"&#10003;":"")+'</div>';
+    html+='<span class="item-name">'+esc(it.name)+'</span></div>';
+    if(it.isCustom){html+='<button class="del-btn" onclick="removeItem(\''+it.id+'\')">&#10006;</button>'}
+    html+='</div>';
+    html+='<div class="item-details">';
+    html+='<button class="qty-sel" onclick="toggleQtyPicker(\''+it.id+'\')"><span>'+esc(it.quantity)+'</span><span class="arrow">&#9660;</span></button>';
+    html+='<input class="note-input" placeholder="Company / Note" value="'+esc(it.note)+'" onchange="updateNote(\''+it.id+'\',this.value)">';
+    html+='</div>';
+    if(openQtyPicker===it.id){
+      html+='<div class="qty-picker">';
+      for(var q=0;q<QTY_OPTIONS.length;q++){
+        var sel=it.quantity===QTY_OPTIONS[q]?" sel":"";
+        html+='<button class="qty-opt'+sel+'" onclick="updateQty(\''+it.id+'\',\''+QTY_OPTIONS[q]+'\')">'+QTY_OPTIONS[q]+'</button>';
+      }
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+  el.innerHTML=html;
+  document.getElementById("totalCount").textContent=items.length;
+  var sc=items.filter(function(i){return i.checked}).length;
+  document.getElementById("selCount").textContent=sc;
+  var allChk=items.length>0&&items.every(function(i){return i.checked});
+  document.getElementById("selAllBtn").textContent=allChk?"Sab Hatao":"Sab Chuno";
+  saveItems();
+}
+
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+function toggleCheck(id){
+  for(var i=0;i<items.length;i++){if(items[i].id===id){items[i].checked=!items[i].checked;break}}
+  render();
+}
+
+function toggleQtyPicker(id){openQtyPicker=openQtyPicker===id?null:id;render()}
+
+function updateQty(id,qty){
+  for(var i=0;i<items.length;i++){if(items[i].id===id){items[i].quantity=qty;break}}
+  openQtyPicker=null;render();
+}
+
+function updateNote(id,note){
+  for(var i=0;i<items.length;i++){if(items[i].id===id){items[i].note=note;break}}
+  saveItems();
+}
+
+function removeItem(id){
+  if(!confirm("Kya aap '"+items.find(function(i){return i.id===id}).name+"' hatana chahte hain? Ye permanently hat jayega."))return;
+  items=items.filter(function(i){return i.id!==id});
+  saveCustom();render();
+}
+
+function addNewItem(){
+  var name=document.getElementById("newName").value.trim();
+  if(!name){alert("Item ka naam daalna zaroori hai");return}
+  items.push({id:genId(),name:name,checked:true,quantity:newQty,note:document.getElementById("newNote").value.trim(),isCustom:true});
+  saveCustom();
+  document.getElementById("newName").value="";
+  document.getElementById("newNote").value="";
+  newQty="1 kg";document.getElementById("newQtyText").textContent="1 kg";
+  document.getElementById("newQtyPicker").classList.add("hidden");
+  render();
+}
+
+function toggleNewQtyPicker(){
+  var el=document.getElementById("newQtyPicker");
+  if(el.classList.contains("hidden")){
+    var html="";
+    for(var q=0;q<QTY_OPTIONS.length;q++){
+      var sel=newQty===QTY_OPTIONS[q]?" sel":"";
+      html+='<button class="qty-opt'+sel+'" onclick="pickNewQty(\''+QTY_OPTIONS[q]+'\')">'+QTY_OPTIONS[q]+'</button>';
+    }
+    el.innerHTML=html;el.classList.remove("hidden");
+  }else{el.classList.add("hidden")}
+}
+
+function pickNewQty(qty){
+  newQty=qty;document.getElementById("newQtyText").textContent=qty;
+  document.getElementById("newQtyPicker").classList.add("hidden");
+}
+
+function selectAll(){
+  var allChk=items.every(function(i){return i.checked});
+  for(var i=0;i<items.length;i++){items[i].checked=!allChk}
+  render();
+}
+
+function resetList(){
+  if(!confirm("Sab items ki quantity aur notes reset ho jayengi. Aapke custom items rahenge.")){return}
+  var d=makeDefaults();
+  try{
+    var c=localStorage.getItem(CUSTOM_KEY);
+    if(c){var ci=JSON.parse(c);if(Array.isArray(ci)&&ci.length>0){
+      items=d.concat(ci.map(function(x){return{id:x.id||genId(),name:x.name,checked:false,quantity:x.quantity||"1 kg",note:"",isCustom:true}}));
+    }else{items=d}}else{items=d}
+  }catch(e){items=d}
+  document.getElementById("genCard").classList.add("hidden");
+  render();
+}
+
+function generateList(){
+  var sel=items.filter(function(i){return i.checked});
+  if(sel.length===0){alert("Pehle items pe tick lagao jo chahiye");return}
+  var t="Easy Rashan - Rashan List\n";
+  t+="━━━━━━━━━━━━━━━━━━━━\n\n";
+  for(var i=0;i<sel.length;i++){
+    t+=(i+1)+". "+sel[i].name+" - "+sel[i].quantity;
+    if(sel[i].note)t+=" ("+sel[i].note+")";
+    t+="\n";
+  }
+  t+="\n━━━━━━━━━━━━━━━━━━━━\nKul items: "+sel.length;
+  document.getElementById("genText").textContent=t;
+  document.getElementById("genCard").classList.remove("hidden");
+}
+
+function sendWhatsApp(){
+  var sel=items.filter(function(i){return i.checked});
+  if(sel.length===0){alert("Pehle items pe tick lagao jo chahiye");return}
+  var t="*Easy Rashan - Rashan List*\n\n";
+  for(var i=0;i<sel.length;i++){
+    t+=(i+1)+". *"+sel[i].name+"* - "+sel[i].quantity;
+    if(sel[i].note)t+=" _("+sel[i].note+")_";
+    t+="\n";
+  }
+  t+="\n_Kul items: "+sel.length+"_";
+  var url="https://wa.me/?text="+encodeURIComponent(t);
+  window.open(url,"_blank");
+}
+
+function shareList(){
+  var t=document.getElementById("genText").textContent;
+  if(navigator.share){navigator.share({title:"Easy Rashan",text:t}).catch(function(){})}
+  else{
+    var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");alert("List copy ho gayi!")}catch(e){alert("Copy nahi ho payi")}
+    document.body.removeChild(ta);
+  }
+}
+
+loadItems();render();
+
+if('serviceWorker' in navigator){
+  var swCode='self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(clients.claim())});self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request).then(function(res){return caches.open("er-v1").then(function(c){c.put(e.request,res.clone());return res})})}))})';
+  var blob=new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+}
+</script>
+</body>
+</html>
